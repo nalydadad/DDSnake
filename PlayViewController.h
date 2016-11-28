@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  PlayViewController.h
 //  DDSnake
 //
 //  Created by DADA on 2016/11/28.
@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DDGameView.h"
 
-@interface ViewController : UIViewController
 
-
+@interface PlayViewController : UIViewController<GameDataSource, GameDelegate>
 @end
-

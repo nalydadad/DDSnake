@@ -9,12 +9,16 @@
 /* Begin PBXBuildFile section */
 		0F9938121DEBCC8700DDE724 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F9938111DEBCC8700DDE724 /* main.m */; };
 		0F9938151DEBCC8700DDE724 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F9938141DEBCC8700DDE724 /* AppDelegate.m */; };
-		0F9938181DEBCC8700DDE724 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F9938171DEBCC8700DDE724 /* ViewController.m */; };
 		0F99381B1DEBCC8700DDE724 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F9938191DEBCC8700DDE724 /* Main.storyboard */; };
 		0F99381D1DEBCC8700DDE724 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0F99381C1DEBCC8700DDE724 /* Assets.xcassets */; };
 		0F9938201DEBCC8700DDE724 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F99381E1DEBCC8700DDE724 /* LaunchScreen.storyboard */; };
 		0F99382B1DEBCC8700DDE724 /* DDSnakeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F99382A1DEBCC8700DDE724 /* DDSnakeTests.m */; };
 		0F9938361DEBCC8700DDE724 /* DDSnakeUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F9938351DEBCC8700DDE724 /* DDSnakeUITests.m */; };
+		0F9938451DEBCF9700DDE724 /* WelcomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F9938441DEBCF9700DDE724 /* WelcomViewController.m */; };
+		0F9938481DEBCF9F00DDE724 /* PlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F9938471DEBCF9F00DDE724 /* PlayViewController.m */; };
+		0F99384B1DEBD01300DDE724 /* DDGameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F99384A1DEBD01300DDE724 /* DDGameView.m */; };
+		0F99384E1DEBD04900DDE724 /* DDSnake.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F99384D1DEBD04900DDE724 /* DDSnake.m */; };
+		0F9938511DEBD1A600DDE724 /* NSMutableArray+NSMutableArray_QueueAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F9938501DEBD1A600DDE724 /* NSMutableArray+NSMutableArray_QueueAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,8 +43,6 @@
 		0F9938111DEBCC8700DDE724 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0F9938131DEBCC8700DDE724 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0F9938141DEBCC8700DDE724 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		0F9938161DEBCC8700DDE724 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		0F9938171DEBCC8700DDE724 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		0F99381A1DEBCC8700DDE724 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0F99381C1DEBCC8700DDE724 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0F99381F1DEBCC8700DDE724 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -51,6 +53,17 @@
 		0F9938311DEBCC8700DDE724 /* DDSnakeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DDSnakeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F9938351DEBCC8700DDE724 /* DDSnakeUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DDSnakeUITests.m; sourceTree = "<group>"; };
 		0F9938371DEBCC8700DDE724 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0F9938431DEBCF9700DDE724 /* WelcomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WelcomViewController.h; path = ../WelcomViewController.h; sourceTree = "<group>"; };
+		0F9938441DEBCF9700DDE724 /* WelcomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WelcomViewController.m; path = ../WelcomViewController.m; sourceTree = "<group>"; };
+		0F9938461DEBCF9F00DDE724 /* PlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayViewController.h; path = ../PlayViewController.h; sourceTree = "<group>"; };
+		0F9938471DEBCF9F00DDE724 /* PlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayViewController.m; path = ../PlayViewController.m; sourceTree = "<group>"; };
+		0F9938491DEBD01300DDE724 /* DDGameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDGameView.h; sourceTree = "<group>"; };
+		0F99384A1DEBD01300DDE724 /* DDGameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDGameView.m; sourceTree = "<group>"; };
+		0F99384C1DEBD04900DDE724 /* DDSnake.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDSnake.h; sourceTree = "<group>"; };
+		0F99384D1DEBD04900DDE724 /* DDSnake.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDSnake.m; sourceTree = "<group>"; };
+		0F99384F1DEBD1A600DDE724 /* NSMutableArray+NSMutableArray_QueueAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+NSMutableArray_QueueAdditions.h"; sourceTree = "<group>"; };
+		0F9938501DEBD1A600DDE724 /* NSMutableArray+NSMutableArray_QueueAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+NSMutableArray_QueueAdditions.m"; sourceTree = "<group>"; };
+		0F9938521DEBDADF00DDE724 /* DDConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DDConstants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,10 +116,19 @@
 			children = (
 				0F9938131DEBCC8700DDE724 /* AppDelegate.h */,
 				0F9938141DEBCC8700DDE724 /* AppDelegate.m */,
-				0F9938161DEBCC8700DDE724 /* ViewController.h */,
-				0F9938171DEBCC8700DDE724 /* ViewController.m */,
-				0F9938191DEBCC8700DDE724 /* Main.storyboard */,
+				0F9938431DEBCF9700DDE724 /* WelcomViewController.h */,
+				0F9938441DEBCF9700DDE724 /* WelcomViewController.m */,
+				0F9938461DEBCF9F00DDE724 /* PlayViewController.h */,
+				0F9938471DEBCF9F00DDE724 /* PlayViewController.m */,
+				0F9938491DEBD01300DDE724 /* DDGameView.h */,
+				0F99384A1DEBD01300DDE724 /* DDGameView.m */,
+				0F99384C1DEBD04900DDE724 /* DDSnake.h */,
+				0F99384D1DEBD04900DDE724 /* DDSnake.m */,
+				0F9938521DEBDADF00DDE724 /* DDConstants.h */,
+				0F99384F1DEBD1A600DDE724 /* NSMutableArray+NSMutableArray_QueueAdditions.h */,
+				0F9938501DEBD1A600DDE724 /* NSMutableArray+NSMutableArray_QueueAdditions.m */,
 				0F99381C1DEBCC8700DDE724 /* Assets.xcassets */,
+				0F9938191DEBCC8700DDE724 /* Main.storyboard */,
 				0F99381E1DEBCC8700DDE724 /* LaunchScreen.storyboard */,
 				0F9938211DEBCC8700DDE724 /* Info.plist */,
 				0F9938101DEBCC8700DDE724 /* Supporting Files */,
@@ -273,9 +295,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F9938181DEBCC8700DDE724 /* ViewController.m in Sources */,
+				0F99384E1DEBD04900DDE724 /* DDSnake.m in Sources */,
+				0F99384B1DEBD01300DDE724 /* DDGameView.m in Sources */,
+				0F9938481DEBCF9F00DDE724 /* PlayViewController.m in Sources */,
+				0F9938451DEBCF9700DDE724 /* WelcomViewController.m in Sources */,
 				0F9938151DEBCC8700DDE724 /* AppDelegate.m in Sources */,
 				0F9938121DEBCC8700DDE724 /* main.m in Sources */,
+				0F9938511DEBD1A600DDE724 /* NSMutableArray+NSMutableArray_QueueAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,6 +533,7 @@
 				0F99383C1DEBCC8700DDE724 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0F99383D1DEBCC8700DDE724 /* Build configuration list for PBXNativeTarget "DDSnakeTests" */ = {
 			isa = XCConfigurationList;
@@ -515,6 +542,7 @@
 				0F99383F1DEBCC8700DDE724 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0F9938401DEBCC8700DDE724 /* Build configuration list for PBXNativeTarget "DDSnakeUITests" */ = {
 			isa = XCConfigurationList;
@@ -523,6 +551,7 @@
 				0F9938421DEBCC8700DDE724 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
