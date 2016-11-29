@@ -14,10 +14,10 @@
 - (instancetype)init {
     self = [super init];
     self.bodyQueue = [[NSMutableArray alloc] init];
-    DDCPoint queryPoint = {.x=10, .y=10};
+    DDCPoint queryPoint = {.x=11, .y=10};
     for(int i = 0; i < 2; i++) {
         [self.bodyQueue enqueue:[NSValue valueWithDDCPoint:queryPoint]];
-        queryPoint.x = queryPoint.x + 1;
+        queryPoint.x = queryPoint.x - 1;
     }
     self.direction = DDDirectionLeft;
     return self;

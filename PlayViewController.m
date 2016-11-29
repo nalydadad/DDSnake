@@ -25,7 +25,7 @@
     [super viewDidLoad];
     self.snake = [[DDSnake alloc] init];
     self.fruit = [self generateRandomFruit];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.2f
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1f
                                                    target:self
                                                  selector:@selector(taskInEachStep)
                                                  userInfo:nil

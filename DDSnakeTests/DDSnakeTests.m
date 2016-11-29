@@ -52,10 +52,10 @@
 - (void) testInitialSnakeBody{
     DDSnake *snake = [[DDSnake alloc]init];
     XCTAssertTrue([snake.bodyQueue count] == 2);
-    DDCPoint point = {.x=10, .y=10};
+    DDCPoint point = {.x=11, .y=10};
     DDCPoint snakeBody = [snake.bodyQueue[0] DDCPointValue];
     XCTAssertTrue(point.x == snakeBody.x && point.y == snakeBody.y);
-    point.x += 1;
+    point.x -= 1;
     snakeBody = [snake.bodyQueue[1] DDCPointValue];
     XCTAssertTrue(point.x == snakeBody.x && point.y == snakeBody.y);
 }
@@ -67,58 +67,40 @@
 
 - (void) testGetSnakeHead {
     DDSnake *snake = [[DDSnake alloc]init];
-    DDCPoint head = {.x=11, .y=10};
+    DDCPoint head = {.x=10, .y=10};
     DDCPoint snakeHead = snake.head;
     XCTAssertTrue(head.x == snakeHead.x && head.y == snakeHead.y);
 }
 
-- (void) testSnakeMoveLeft {
+- (void) testSnakeMoveLeftToLeft {
     DDSnake *snake = [[DDSnake alloc]init];
     snake.direction = DDDirectionLeft;
     [snake move];
     DDCPoint tail = [snake.bodyQueue[0] DDCPointValue];
     DDCPoint head = [snake.bodyQueue[1] DDCPointValue];
-    XCTAssertTrue(tail.x == 11 && tail.y == 10);
-    XCTAssertTrue(head.x == 12 && head.y == 10);
+    XCTAssertTrue(tail.x == 10 && tail.y == 10);
+    XCTAssertTrue(head.x == 9 && head.y == 10);
 }
 
-- (void) testSnakeMoveRight {
-    DDSnake *snake = [[DDSnake alloc]init];
-    snake.direction = DDDirectionRight;
-    [snake move];
-    DDCPoint tail = [snake.bodyQueue[0] DDCPointValue];
-    DDCPoint head = [snake.bodyQueue[1] DDCPointValue];
-    XCTAssertTrue(tail.x == 11 && tail.y == 10);
-    XCTAssertTrue(head.x == 12 && head.y == 10);
-}
-
-- (void) testSnakeMoveUp {
+- (void) testSnakeMoveLeftToUp {
     DDSnake *snake = [[DDSnake alloc]init];
     snake.direction = DDDirectionUp;
     [snake move];
     DDCPoint tail = [snake.bodyQueue[0] DDCPointValue];
     DDCPoint head = [snake.bodyQueue[1] DDCPointValue];
-    XCTAssertTrue(tail.x == 11 && tail.y == 10);
-    XCTAssertTrue(head.x == 12 && head.y == 10);
+    XCTAssertTrue(tail.x == 10 && tail.y == 10);
+    XCTAssertTrue(head.x == 10 && head.y == 9);
 }
 
-- (void) testSnakeMoveDown {
+- (void) testSnakeMoveLeftToDown {
     DDSnake *snake = [[DDSnake alloc]init];
     snake.direction = DDDirectionDown;
     [snake move];
     DDCPoint tail = [snake.bodyQueue[0] DDCPointValue];
     DDCPoint head = [snake.bodyQueue[1] DDCPointValue];
-    XCTAssertTrue(tail.x == 11 && tail.y == 10);
-    XCTAssertTrue(head.x == 12 && head.y == 10);
+    XCTAssertTrue(tail.x == 10 && tail.y == 10);
+    XCTAssertTrue(head.x == 10 && head.y == 11);
 }
-
-
-
-
-
-
-
-
 
 - (void)testPerformanceExample {
     // This is an example of a performance test case.
