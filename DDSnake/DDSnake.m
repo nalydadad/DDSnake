@@ -16,11 +16,10 @@
     self.bodyQueue = [[NSMutableArray alloc] init];
     DDCPoint queryPoint = {.x=10, .y=10};
     for(int i = 0; i < 2; i++) {
-        queryPoint.x = queryPoint.x + 1;
         [self.bodyQueue enqueue:[NSValue valueWithDDCPoint:queryPoint]];
+        queryPoint.x = queryPoint.x + 1;
     }
     self.direction = DDDirectionLeft;
-    
     return self;
 }
 
@@ -73,7 +72,5 @@
     [self.bodyQueue insertObject:[NSValue valueWithDDCPoint:newBodyPoint1] atIndex:0];
     [self.bodyQueue insertObject:[NSValue valueWithDDCPoint:newBodyPoint2] atIndex:0];
 }
-
-
 
 @end
