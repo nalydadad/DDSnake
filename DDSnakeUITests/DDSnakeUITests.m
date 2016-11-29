@@ -9,7 +9,7 @@
 #import <XCTest/XCTest.h>
 
 @interface DDSnakeUITests : XCTestCase
-
+@property (strong, nonatomic)  XCUIApplication *application;
 @end
 
 @implementation DDSnakeUITests
@@ -22,7 +22,8 @@
     // In UI tests it is usually best to stop immediately when a failure occurs.
     self.continueAfterFailure = NO;
     // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
-    [[[XCUIApplication alloc] init] launch];
+    self.application = [[XCUIApplication alloc] init];
+    [self.application launch];
     
     // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
 }
@@ -32,9 +33,22 @@
     [super tearDown];
 }
 
-- (void)testExample {
+- (void)testStartButtonExist {
     // Use recording to get started writing UI tests.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
+    XCUIElementQuery *buttons = [self.application buttons];
+    XCUIElement *startButton = buttons[@"Start"];
+    XCTAssertTrue(startButton.exists);
 }
+
+- (void)testStartButtonTap {
+    // Use recording to get started writing UI tests.
+    // Use XCTAssert and related functions to verify your tests produce the correct results.
+    XCUIElementQuery *buttons = [self.application buttons];
+    XCUIElement *startButton = buttons[@"Start"];
+    [startButton tap];
+    sleep(1);
+}
+
 
 @end

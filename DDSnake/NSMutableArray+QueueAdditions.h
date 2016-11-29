@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSMutableArray (NSMutableArray_QueueAdditions)
+@interface NSMutableArray (QueueAdditions)
 - (id) dequeue;
 - (void) enqueue:(id) obj;
 @end

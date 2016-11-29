@@ -26,10 +26,11 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0F9938251DEBCC8700DDE724"
@@ -45,6 +46,16 @@
                BlueprintIdentifier = "0F9938301DEBCC8700DDE724"
                BuildableName = "DDSnakeUITests.xctest"
                BlueprintName = "DDSnakeUITests"
+               ReferencedContainer = "container:DDSnake.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0F9938591DEC46AC00DDE724"
+               BuildableName = "DDSnakeTests2.xctest"
+               BlueprintName = "DDSnakeTests2"
                ReferencedContainer = "container:DDSnake.xcodeproj">
             </BuildableReference>
          </TestableReference>

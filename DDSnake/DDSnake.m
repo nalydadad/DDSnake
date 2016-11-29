@@ -7,80 +7,73 @@
 //
 
 #import "DDSnake.h"
-#import "NSMutableArray+NSMutableArray_QueueAdditions.h"
-
+#import "NSMutableArray+QueueAdditions.h"
 
 @implementation DDSnake
 
 - (instancetype)init {
     self = [super init];
     self.bodyQueue = [[NSMutableArray alloc] init];
-    CGPoint queryPoint = CGPointMake(10, 10);
+    DDCPoint queryPoint = {.x=10, .y=10};
     for(int i = 0; i < 2; i++) {
-        queryPoint = CGPointMake(queryPoint.x + 1, queryPoint.y);
-        [self.bodyQueue enqueue:[NSValue valueWithCGPoint:queryPoint]];
+        queryPoint.x = queryPoint.x + 1;
+        [self.bodyQueue enqueue:[NSValue valueWithDDCPoint:queryPoint]];
     }
-    self.direction = goLeft;
-    self.head = [[self.bodyQueue lastObject] CGPointValue];
-    self.tail = [[self.bodyQueue objectAtIndex:0] CGPointValue];
-//    [self printBodyCoordinate];
+    self.direction = DDDirectionLeft;
+    
     return self;
 }
 
+- (DDCPoint) head {
+    return [[self.bodyQueue lastObject] DDCPointValue];
+}
 
 -(void)move {
+    DDCPoint newHead = self.head;
     switch (self.direction) {
-        case goUp:
-            self.head = CGPointMake(self.head.x, self.head.y - 1);
+        case DDDirectionUp:
+            newHead.y -= 1;
             break;
-        case goDown:
-            self.head = CGPointMake(self.head.x, self.head.y + 1);
+        case DDDirectionDown:
+            newHead.y += 1;
             break;
-        case goLeft:
-            self.head = CGPointMake(self.head.x - 1, self.head.y);
+        case DDDirectionLeft:
+            newHead.x -= 1;
             break;
-        case goRight:
-            self.head = CGPointMake(self.head.x + 1, self.head.y);
+        case DDDirectionRight:
+            newHead.x += 1;
             break;
         default:
             assert(true);
             break;
     }
-    [self.bodyQueue enqueue:[NSValue valueWithCGPoint:self.head]];
-    self.tail = [(NSValue*)self.bodyQueue.dequeue CGPointValue];
-//    [self printBodyCoordinate];
+    [self.bodyQueue enqueue:[NSValue valueWithDDCPoint:newHead]];
+    [self.bodyQueue.dequeue DDCPointValue];
 }
 
 - (BOOL)isDead {
-    NSArray *subarray = [self.bodyQueue subarrayWithRange:NSMakeRange(1, [self.bodyQueue count] - 2)];
-    if([subarray containsObject:[NSValue valueWithCGPoint:self.head]]) {
-        return YES;
-    }
-    else {
-        return NO;
-    }
+    NSArray *bodyWithoutHead = [self.bodyQueue subarrayWithRange:NSMakeRange(0, [self.bodyQueue count] - 2)];
+    return [bodyWithoutHead containsObject:[NSValue valueWithDDCPoint:self.head]];
 }
 
 - (void)growUp {
-    CGPoint lastFirst = [[self.bodyQueue objectAtIndex:0] CGPointValue];
-    CGPoint lastSecond = [[self.bodyQueue objectAtIndex:1] CGPointValue];
-    NSInteger offset = lastFirst.x - lastSecond.x;
+    DDCPoint firstLast = [self.bodyQueue[0] DDCPointValue];
+    DDCPoint secondLast = [self.bodyQueue[1] DDCPointValue];
+    NSInteger offset = firstLast.x - secondLast.x;
+    DDCPoint newBodyPoint1 = firstLast;
+    DDCPoint newBodyPoint2 = firstLast;
     if(offset != 0) {
-        [self.bodyQueue insertObject:[NSValue valueWithCGPoint:CGPointMake(lastFirst.x + offset, lastFirst.y)] atIndex:0];
-        [self.bodyQueue insertObject:[NSValue valueWithCGPoint:CGPointMake(lastFirst.x + 2 * offset, lastFirst.y)] atIndex:0];
+        newBodyPoint1.x += offset;
+        newBodyPoint2.x += offset * 2;
     } else {
-        offset = lastFirst.y - lastSecond.y;
-        [self.bodyQueue insertObject:[NSValue valueWithCGPoint:CGPointMake(lastFirst.x, lastFirst.y + offset)] atIndex:0];
-        [self.bodyQueue insertObject:[NSValue valueWithCGPoint:CGPointMake(lastFirst.x, lastFirst.y + offset * 2)] atIndex:0];
+        offset = firstLast.y - secondLast.y;
+        newBodyPoint1.y += offset;
+        newBodyPoint2.y += offset * 2;
     }
+    [self.bodyQueue insertObject:[NSValue valueWithDDCPoint:newBodyPoint1] atIndex:0];
+    [self.bodyQueue insertObject:[NSValue valueWithDDCPoint:newBodyPoint2] atIndex:0];
 }
 
-//- (void) printBodyCoordinate {
-//    NSLog(@"--------Body-------");
-//    for(NSValue *point in self.bodyQueue) {
-//        NSLog(@"[%f, %f]", [point CGPointValue].x, [point CGPointValue].y);
-//    }
-//}
 
 
 @end

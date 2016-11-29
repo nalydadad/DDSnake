@@ -11,10 +11,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Welcom View Controller-->
+        <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="WelcomViewController" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -35,7 +35,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="48"/>
                                 <state key="normal" title="Start"/>
                                 <connections>
-                                    <segue destination="Kde-h9-WfV" kind="show" animates="NO" id="Xj3-UY-cCX"/>
+                                    <segue destination="Kde-h9-WfV" kind="show" identifier="startPlay" animates="NO" id="Xj3-UY-cCX"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -48,7 +48,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-761" y="54"/>
+            <point key="canvasLocation" x="-762.39999999999998" y="53.523238380809602"/>
         </scene>
         <!--Play View Controller-->
         <scene sceneID="Xjy-nm-bip">
@@ -68,7 +68,7 @@
                                 <state key="normal" title="||"/>
                                 <connections>
                                     <action selector="stopPlaying:" destination="Kde-h9-WfV" eventType="touchUpInside" id="LTb-J7-b1i"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" animates="NO" id="g9Q-3H-6qg"/>
+                                    <segue destination="BYZ-38-t0r" kind="presentation" identifier="backToMain" modalTransitionStyle="crossDissolve" id="g9Q-3H-6qg"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -81,7 +81,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="gameView" destination="9C5-3W-RcY" id="Q7L-0w-gpi"/>
+                        <outlet property="gameView" destination="9C5-3W-RcY" id="n0Q-ID-CIa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z1W-oM-qK1" userLabel="First Responder" sceneMemberID="firstResponder"/>

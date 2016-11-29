@@ -8,19 +8,20 @@
 
 #import <UIKit/UIKit.h>
 #import "DDConstants.h"
+#import "DDPoint.h"
 
 @class DDGameView;
 
 @protocol GameDataSource
-- (CGPoint) getSnakeHead;
-- (CGPoint) getSnakeTail;
-- (CGPoint) getFruitPos;
-- (id)getSnakeBody;
+//- (DDCPoint)gameviewRequestSnakeHead:(DDGameView *)view;
+//- (DDCPoint)gameviewRequestSnakeTail:(DDGameView *)view;
+- (DDCPoint)gameviewRequestFruit:(DDGameView*)view;
+- (id)gameViewRequestSnakeBody:(DDGameView*)view;
 
 @end
 
 @protocol GameDelegate
-- (void) reportGestureChage:(Direction) dir;
+- (void)gameview:(DDGameView *)view didChangeDirection:(DDDirection) dir;
 @end
 
 @interface DDGameView : UIView
@@ -28,5 +29,5 @@
 @property(assign, nonatomic) NSUInteger scale;
 @property(assign, nonatomic) NSUInteger coorWidth;
 @property(assign, nonatomic) NSUInteger coorHeight;
-- (CGPoint) preventOutOfBount:(CGPoint)originPoint;
+- (DDCPoint) preventOutOfBount:(DDCPoint)originPoint;
 @end

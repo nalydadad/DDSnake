@@ -1,4 +1,4 @@
-//
+    //
 //  PlayViewController.m
 //  DDSnake
 //
@@ -11,11 +11,11 @@
 
 @interface PlayViewController ()
 
-@property(strong, nonatomic)DDSnake *snake;
-@property(assign, nonatomic)CGPoint fruit;
-@property(weak, nonatomic)NSTimer *timer;
+@property(strong, nonatomic) DDSnake *snake;
+@property(assign, nonatomic) DDCPoint fruit;
+@property(weak, nonatomic) NSTimer *timer;
 @property(strong, nonatomic)IBOutlet DDGameView *gameView;
-@property(assign, nonatomic)Direction gestureDirection;
+@property(assign, nonatomic) DDDirection gestureDirection;
 
 @end
 
@@ -24,75 +24,80 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.snake = [[DDSnake alloc] init];
-    self.fruit = [self generateFruit];
-    self.timer =  [NSTimer scheduledTimerWithTimeInterval:0.3f
+    self.fruit = [self generateRandomFruit];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.2f
                                                    target:self
                                                  selector:@selector(taskInEachStep)
                                                  userInfo:nil
                                                   repeats:YES];
+    self.gestureDirection = DDDirectionLeft;
     [self.timer fire];
-    self.gestureDirection = goLeft;
     self.gameView.delegate = self;
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
     [self.timer invalidate];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+    self.timer = nil;
 }
 
 - (void)taskInEachStep {
-    if((self.gestureDirection +6) % 4 != self.snake.direction) {
+    if([self isOppositeDirection:self.gestureDirection]) {
         self.snake.direction = self.gestureDirection;
     }
-
+    
     [self.snake move];
     
     if([self.snake isDead]) {
         [self.timer invalidate];
+        self.timer = nil;
+        [self performSegueWithIdentifier:@"backToMain" sender:self];
         return;
     }
     
-    self.snake.head = [self.gameView preventOutOfBount:self.snake.head];
-    if(CGPointEqualToPoint(self.snake.head, self.fruit)) {
-        self.fruit = [self.gameView preventOutOfBount:[self generateFruit]];
+    if(DDCPointEqualToPoint([self.gameView preventOutOfBount:self.snake.head], self.fruit)) {
+        self.fruit = [self.gameView preventOutOfBount:[self generateRandomFruit]];
         [self.snake growUp];
     }
     
     [self.gameView setNeedsDisplay];
 }
 
-- (CGPoint) generateFruit {
-    return CGPointMake((NSInteger)arc4random() % (self.gameView.coorWidth),
-                       (NSInteger)arc4random() % (self.gameView.coorHeight));
+- (BOOL) isOppositeDirection:(DDDirection) direction{
+    return (direction +6) % 4 != self.snake.direction;
+}
+
+- (DDCPoint) generateRandomFruit {
+    DDCPoint fruit = DDCPointMake((NSInteger)arc4random() % (self.gameView.coorWidth),
+                                  (NSInteger)arc4random() % (self.gameView.coorHeight));
+    while([self.snake.bodyQueue containsObject:[NSValue valueWithDDCPoint:fruit]]) {
+        fruit = DDCPointMake((NSInteger)arc4random() % (self.gameView.coorWidth),
+                             (NSInteger)arc4random() % (self.gameView.coorHeight));
+    }
+    return fruit;
 }
 
 - (IBAction)stopPlaying:(id)sender {
     [self.timer invalidate];
+    self.timer = nil;
 }
 
 #pragma - View DataSource and Delegate
 
--(CGPoint)getFruitPos {
+- (DDCPoint)gameviewRequestFruit:(DDGameView *)view{
     return self.fruit;
 }
 
--(CGPoint)getSnakeHead {
+- (DDCPoint)gameviewRequestSnakeHead:(DDGameView *)view{
     return self.snake.head;
 }
 
-- (CGPoint)getSnakeTail {
-    return self.snake.tail;
-}
-
--(void)reportGestureChage:(Direction)dir {
-    self.gestureDirection = dir;
-}
-
--(id)getSnakeBody {
+-(id)gameViewRequestSnakeBody:(DDGameView *)view {
     return self.snake.bodyQueue;
+}
+
+- (void)gameview:(DDGameView *)view didChangeDirection:(DDDirection)direction{
+    self.gestureDirection = direction;
 }
 
 @end

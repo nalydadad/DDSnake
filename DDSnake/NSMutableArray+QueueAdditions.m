@@ -6,12 +6,13 @@
 //  Copyright © 2016年 DADA. All rights reserved.
 //
 
-#import "NSMutableArray+NSMutableArray_QueueAdditions.h"
+#import "NSMutableArray+QueueAdditions.h"
 #import <UIKit/UIKit.h>
-@implementation NSMutableArray (NSMutableArray_QueueAdditions)
+
+@implementation NSMutableArray (QueueAdditions)
 
 - (id)dequeue {
-    id object = [self objectAtIndex:0];
+    id object = [self firstObject];
     if(object != nil) {
         [self removeObjectAtIndex:0];
     }

@@ -15,6 +15,8 @@
 @property(strong, nonatomic) UIColor *fruitColor;
 @property(assign, nonatomic) CGContextRef context;
 @property(assign, nonatomic) BOOL firstLaunch;
+@property(assign, nonatomic) CGFloat offsetX;
+@property(assign, nonatomic) CGFloat offsetY;
 @end
 
 
@@ -24,49 +26,46 @@
 {
     self = [super initWithCoder:coder];
     if (self) {
-        NSLog(@"Frame width: %f height: %f ", self.frame.size.width, self.frame.size.height);
-        
         [self setBackgroundColor:[UIColor grayColor]];
-        
         self.snakeColor = [UIColor redColor];
         self.fruitColor = [UIColor greenColor];
         self.backColor = [UIColor whiteColor];
         [self prepareForGuestureDetection];
         self.scale = 20;
-        self.coorWidth = (NSInteger)self.frame.size.width / self.scale;
-        self.coorHeight = (NSInteger)self.frame.size.height / self.scale;
+        CGSize screeSize = [[UIScreen mainScreen] bounds].size;
+        self.coorWidth = screeSize.width / self.scale;
+        self.coorHeight = screeSize.height / self.scale;
+        self.offsetX = (screeSize.width - self.scale * self.coorWidth) / 2.0;
+        self.offsetY = (screeSize.height - self.scale * self.coorHeight) / 2.0;
     }
     return self;
 }
 
 - (void)drawRect:(CGRect)rect {
     self.context = UIGraphicsGetCurrentContext();
-    id snakeBody = [self.delegate getSnakeBody];
-    [self drawSnakeBody:snakeBody];
-    CGRect fruit = [self makeRectInCoordinate:[self.delegate getFruitPos]];
-    [self drawObject:fruit Color:self.fruitColor];
+    [self drawSnakeBody:[self.delegate gameViewRequestSnakeBody:self]];
+    CGRect fruit = [self makeRectInCoordinate:[self.delegate gameviewRequestFruit:self]];
+    [self drawUnitObject:fruit Color:self.fruitColor];
 }
 
-- (CGRect) makeRectInCoordinate:(CGPoint)point {
-    return CGRectMake(point.x * self.scale, point.y * self.scale, self.scale, self.scale);
+- (CGRect) makeRectInCoordinate:(DDCPoint)point {
+    return CGRectMake(point.x * self.scale + self.offsetX,
+                      point.y * self.scale + self.offsetY,
+                      self.scale, self.scale);
 }
 
 - (void)drawSnakeBody:(id)body {
-    NSMutableArray *snakeBody = (NSMutableArray*)body;
-    NSLog(@"--------Body-------");
-    for(NSValue* value in snakeBody) {
-        CGPoint point = [self preventOutOfBount:[value CGPointValue]];
-        NSLog(@"[%f, %f]", point.x, point.y);
-        [self drawObject:[self makeRectInCoordinate:point] Color:self.snakeColor];
+    NSMutableArray<NSValue*> *snakeBody = (NSMutableArray*)body;
+    for(int i=0; i< [snakeBody count]; i++ ) {
+        DDCPoint point = [self preventOutOfBount:[snakeBody[i] DDCPointValue]];
+        snakeBody[i] = [NSValue valueWithBytes:&point objCType:@encode(DDCPoint)];
+        [self drawUnitObject:[self makeRectInCoordinate:[snakeBody[i] DDCPointValue]] Color:self.snakeColor];
     }
 }
 
-
-
-- (void) drawObject:(CGRect)rect Color:(UIColor*)color{
+- (void) drawUnitObject:(CGRect)rect Color:(UIColor*)color{
     CGContextBeginPath(self.context);
     CGContextSetStrokeColorWithColor(self.context, color.CGColor);
-    CGContextSetFillColorWithColor(self.context, color.CGColor);
     CGContextAddRect(self.context, rect);
     CGContextStrokePath(self.context);
 }
@@ -92,28 +91,31 @@
 }
 
 - (void)reportSwipeUp:(UIGestureRecognizer *)recognizer {
-    [self.delegate reportGestureChage:goUp];
+    [self.delegate gameview:self didChangeDirection:DDDirectionUp];
 }
 
 - (void)reportSwipeDown:(UIGestureRecognizer *)recognizer {
-    [self.delegate reportGestureChage:goDown];
+    [self.delegate gameview:self didChangeDirection:DDDirectionDown];
 }
 
 - (void)reportSwipeLeft:(UIGestureRecognizer *)recognizer {
-    [self.delegate reportGestureChage:goLeft];
+    [self.delegate gameview:self didChangeDirection:DDDirectionLeft];
 }
 
 - (void)reportSwipeRight:(UIGestureRecognizer *)recognizer {
-    [self.delegate reportGestureChage:goRight];
+    [self.delegate gameview:self didChangeDirection:DDDirectionRight];
 }
 
-- (CGPoint) preventOutOfBount:(CGPoint)originPoint {
-    while(originPoint.x < 0 || originPoint.y < 0) {
-        originPoint = CGPointMake(originPoint.x + self.coorWidth,
-                                  originPoint.y + self.coorHeight);
+- (DDCPoint) preventOutOfBount:(DDCPoint)originPoint {
+    while(originPoint.x < 0) {
+        originPoint.x += self.coorWidth;
     }
-    return CGPointMake((NSInteger)originPoint.x % self.coorWidth ,
-                       (NSInteger)originPoint.y % self.coorHeight);
+    while(originPoint.y < 0) {
+        originPoint.y += self.coorHeight;
+    }
+    originPoint.x = originPoint.x % (self.coorWidth);
+    originPoint.y = originPoint.y % (self.coorHeight);
+    return originPoint;
 }
 
 @end

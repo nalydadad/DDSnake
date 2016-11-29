@@ -7,6 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "DDPoint.h"
 
 @interface DDSnakeTests : XCTestCase
 
@@ -24,9 +25,16 @@
     [super tearDown];
 }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
+- (void)testDDCPoint
+{
+    DDCPoint p = {
+        .x = 1,
+        .y = 2
+    };
+    NSValue *value = [NSValue valueWithDDCPoint:p];
+    DDCPoint v = value.DDCPointValue;
+    XCTAssertTrue(v.x == 1);
+    XCTAssertTrue(v.y == 2);
 }
 
 - (void)testPerformanceExample {

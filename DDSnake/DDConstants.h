@@ -10,8 +10,11 @@
 #ifndef DDConstants_h
 #define DDConstants_h
 
-typedef NS_ENUM(NSInteger, Direction) {
-    goUp=0, goRight, goDown, goLeft
+typedef NS_ENUM(NSInteger, DDDirection) {
+    DDDirectionUp=0,
+    DDDirectionRight,
+    DDDirectionDown,
+    DDDirectionLeft
 };
 
 #endif /* DDConstants_h */

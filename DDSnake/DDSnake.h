@@ -8,15 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "DDConstants.h"
-#import <UIKit/UIKit.h>
+#import "DDPoint.h"
 
 @interface DDSnake : NSObject
-
-@property(assign, nonatomic)Direction direction;
-@property(assign, nonatomic)CGPoint head;
-@property(assign, nonatomic)CGPoint tail;
-@property(strong, nonatomic) NSMutableArray *bodyQueue;
-
+@property(assign, nonatomic) DDDirection direction;
+@property(strong, nonatomic) NSMutableArray<NSValue*> *bodyQueue;
+- (DDCPoint) head;
 - (void) move;
 - (BOOL) isDead;
 - (void)growUp;
