@@ -23,8 +23,16 @@
     return self;
 }
 
+
+
 - (DDCPoint) head {
     return [[self.bodyQueue lastObject] DDCPointValue];
+}
+
+- (void) changeSnakeDirection:(DDDirection)direction {
+    if(![self isOppositeDirection:direction]) {
+        self.direction = direction;
+    }
 }
 
 -(void)move {
@@ -42,35 +50,36 @@
         case DDDirectionRight:
             newHead.x += 1;
             break;
-        default:
-            assert(true);
-            break;
     }
     [self.bodyQueue enqueue:[NSValue valueWithDDCPoint:newHead]];
     [self.bodyQueue.dequeue DDCPointValue];
 }
 
-- (BOOL)isDead {
+- (BOOL)isHitBodyByHead {
     NSArray *bodyWithoutHead = [self.bodyQueue subarrayWithRange:NSMakeRange(0, [self.bodyQueue count] - 2)];
     return [bodyWithoutHead containsObject:[NSValue valueWithDDCPoint:self.head]];
 }
 
 - (void)growUp {
-    DDCPoint firstLast = [self.bodyQueue[0] DDCPointValue];
-    DDCPoint secondLast = [self.bodyQueue[1] DDCPointValue];
-    NSInteger offset = firstLast.x - secondLast.x;
-    DDCPoint newBodyPoint1 = firstLast;
-    DDCPoint newBodyPoint2 = firstLast;
-    if(offset != 0) {
-        newBodyPoint1.x += offset;
-        newBodyPoint2.x += offset * 2;
+    DDCPoint firstLastBody = [self.bodyQueue[0] DDCPointValue];
+    DDCPoint secondLastBody = [self.bodyQueue[1] DDCPointValue];
+    NSInteger growingOffset = firstLastBody.x - secondLastBody.x;
+    DDCPoint newBody1 = firstLastBody;
+    DDCPoint newBody2 = firstLastBody;
+    if(growingOffset != 0) {
+        newBody1.x += growingOffset;
+        newBody2.x += growingOffset * 2;
     } else {
-        offset = firstLast.y - secondLast.y;
-        newBodyPoint1.y += offset;
-        newBodyPoint2.y += offset * 2;
+        growingOffset = firstLastBody.y - secondLastBody.y;
+        newBody1.y += growingOffset;
+        newBody2.y += growingOffset * 2;
     }
-    [self.bodyQueue insertObject:[NSValue valueWithDDCPoint:newBodyPoint1] atIndex:0];
-    [self.bodyQueue insertObject:[NSValue valueWithDDCPoint:newBodyPoint2] atIndex:0];
+    [self.bodyQueue insertObject:[NSValue valueWithDDCPoint:newBody1] atIndex:0];
+    [self.bodyQueue insertObject:[NSValue valueWithDDCPoint:newBody2] atIndex:0];
+}
+
+- (BOOL) isOppositeDirection:(DDDirection) direction{
+    return (direction +6) % 4 == self.direction;
 }
 
 @end

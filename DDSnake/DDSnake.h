@@ -15,6 +15,7 @@
 @property(strong, nonatomic) NSMutableArray<NSValue*> *bodyQueue;
 - (DDCPoint) head;
 - (void) move;
-- (BOOL) isDead;
+- (void) changeSnakeDirection:(DDDirection)dir;
+- (BOOL) isHitBodyByHead;
 - (void)growUp;
 @end

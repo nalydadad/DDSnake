@@ -25,7 +25,7 @@
     [super viewDidLoad];
     self.snake = [[DDSnake alloc] init];
     self.fruit = [self generateRandomFruit];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1f
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5f
                                                    target:self
                                                  selector:@selector(taskInEachStep)
                                                  userInfo:nil
@@ -42,17 +42,13 @@
 }
 
 - (void)taskInEachStep {
-    if([self isOppositeDirection:self.gestureDirection]) {
-        self.snake.direction = self.gestureDirection;
-    }
-    
+    [self.snake changeSnakeDirection:self.gestureDirection];
     [self.snake move];
     
-    if([self.snake isDead]) {
+    if([self.snake isHitBodyByHead]) {
         [self.timer invalidate];
         self.timer = nil;
         [self performSegueWithIdentifier:@"backToMain" sender:self];
-        return;
     }
     
     if(DDCPointEqualToPoint([self.gameView preventOutOfBount:self.snake.head], self.fruit)) {
@@ -63,9 +59,7 @@
     [self.gameView setNeedsDisplay];
 }
 
-- (BOOL) isOppositeDirection:(DDDirection) direction{
-    return (direction +6) % 4 != self.snake.direction;
-}
+
 
 - (DDCPoint) generateRandomFruit {
     DDCPoint fruit = DDCPointMake((NSInteger)arc4random() % (self.gameView.coorWidth),

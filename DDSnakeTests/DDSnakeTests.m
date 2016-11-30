@@ -74,7 +74,17 @@
 
 - (void) testSnakeMoveLeftToLeft {
     DDSnake *snake = [[DDSnake alloc]init];
-    snake.direction = DDDirectionLeft;
+    [snake changeSnakeDirection:DDDirectionLeft];
+    [snake move];
+    DDCPoint tail = [snake.bodyQueue[0] DDCPointValue];
+    DDCPoint head = [snake.bodyQueue[1] DDCPointValue];
+    XCTAssertTrue(tail.x == 10 && tail.y == 10);
+    XCTAssertTrue(head.x == 9 && head.y == 10);
+}
+
+- (void) testSnakeMoveLeftToRight {
+    DDSnake *snake = [[DDSnake alloc]init];
+    [snake changeSnakeDirection:DDDirectionRight];
     [snake move];
     DDCPoint tail = [snake.bodyQueue[0] DDCPointValue];
     DDCPoint head = [snake.bodyQueue[1] DDCPointValue];
@@ -84,7 +94,7 @@
 
 - (void) testSnakeMoveLeftToUp {
     DDSnake *snake = [[DDSnake alloc]init];
-    snake.direction = DDDirectionUp;
+    [snake changeSnakeDirection:DDDirectionUp];
     [snake move];
     DDCPoint tail = [snake.bodyQueue[0] DDCPointValue];
     DDCPoint head = [snake.bodyQueue[1] DDCPointValue];
@@ -94,13 +104,66 @@
 
 - (void) testSnakeMoveLeftToDown {
     DDSnake *snake = [[DDSnake alloc]init];
-    snake.direction = DDDirectionDown;
+    [snake changeSnakeDirection:DDDirectionDown];
     [snake move];
     DDCPoint tail = [snake.bodyQueue[0] DDCPointValue];
     DDCPoint head = [snake.bodyQueue[1] DDCPointValue];
     XCTAssertTrue(tail.x == 10 && tail.y == 10);
     XCTAssertTrue(head.x == 10 && head.y == 11);
 }
+
+- (void) testSnakeMoveLeftToDownToRight {
+    DDSnake *snake = [[DDSnake alloc]init];
+    [snake changeSnakeDirection:DDDirectionDown];
+    [snake move];
+    [snake changeSnakeDirection:DDDirectionRight];
+    [snake move];
+    DDCPoint tail = [snake.bodyQueue[0] DDCPointValue];
+    DDCPoint head = [snake.bodyQueue[1] DDCPointValue];
+    XCTAssertTrue(tail.x == 10 && tail.y == 11);
+    XCTAssertTrue(head.x == 11 && head.y == 11);
+}
+
+- (void) testSnakeGrowUpByHorizontalTail {
+    DDSnake *snake = [DDSnake new];
+    [snake growUp];
+    DDCPoint firstLastTail = [snake.bodyQueue[0] DDCPointValue];
+    DDCPoint secondLastTail = [snake.bodyQueue[1] DDCPointValue];
+    XCTAssertTrue(firstLastTail.x == 13 && firstLastTail.y == 10);
+    XCTAssertTrue(secondLastTail.x == 12 && secondLastTail.y == 10);
+}
+
+- (void) testSnakeGrowUpByVerticalTail {
+    DDSnake *snake = [DDSnake new];
+    [snake.bodyQueue removeAllObjects];
+    DDCPoint tail = {.x=10, .y=10};
+    DDCPoint head = {.x=10, .y=11};
+    [snake.bodyQueue enqueue:[NSValue valueWithDDCPoint:tail]];
+    [snake.bodyQueue enqueue:[NSValue valueWithDDCPoint:head]];
+    [snake growUp];
+    DDCPoint firstLastTail = [snake.bodyQueue[0] DDCPointValue];
+    DDCPoint secondLastTail = [snake.bodyQueue[1] DDCPointValue];
+    XCTAssertTrue(firstLastTail.x == 10 && firstLastTail.y == 8);
+    XCTAssertTrue(secondLastTail.x == 10 && secondLastTail.y == 9);
+}
+
+- (void) testSnakeHitByHead {
+    DDSnake *snake = [DDSnake new];
+    [snake growUp];
+    [snake growUp];
+    [snake changeSnakeDirection:DDDirectionDown];
+    [snake move];
+    [snake changeSnakeDirection:DDDirectionRight];
+    [snake move];
+    [snake changeSnakeDirection:DDDirectionUp];
+    [snake move];
+    XCTAssertTrue([snake isHitBodyByHead]);
+}
+
+
+
+
+
 
 - (void)testPerformanceExample {
     // This is an example of a performance test case.

@@ -31,7 +31,7 @@
         self.fruitColor = [UIColor greenColor];
         self.backColor = [UIColor whiteColor];
         [self prepareForGuestureDetection];
-        self.scale = 20;
+        self.scale = 30;
         CGSize screeSize = [[UIScreen mainScreen] bounds].size;
         self.coorWidth = screeSize.width / self.scale;
         self.coorHeight = screeSize.height / self.scale;
