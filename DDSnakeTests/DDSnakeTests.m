@@ -30,7 +30,7 @@
 
 #pragma - mark Test Data Structure [DDCPoint, NSMutableArray]
 
-- (void)testDDCPoint
+- (void)testDDCPointInit
 {
     DDCPoint p = {.x = 1, .y = 2};
     NSValue *value = [NSValue valueWithDDCPoint:p];
@@ -45,6 +45,14 @@
     [bodyQueue addObject:@"1"];
     XCTAssertTrue([[bodyQueue dequeue] isEqualToString:@"1"]);
     XCTAssertTrue([bodyQueue count] == 0);
+}
+
+- (void)testNSMutableArrayEnqueue
+{
+    NSMutableArray * bodyQueue = [[NSMutableArray alloc]init];
+    [bodyQueue enqueue:@"1"];
+    XCTAssertTrue([bodyQueue[0] isEqualToString:@"1"]);
+    XCTAssertTrue([bodyQueue count] == 1);
 }
 
 #pragma - mark Test Snake class
@@ -147,7 +155,7 @@
     XCTAssertTrue(secondLastTail.x == 10 && secondLastTail.y == 9);
 }
 
-- (void) testSnakeHitByHead {
+- (void) testSnakeIsHitByHead {
     DDSnake *snake = [DDSnake new];
     [snake growUp];
     [snake growUp];
@@ -160,10 +168,18 @@
     XCTAssertTrue([snake isHitBodyByHead]);
 }
 
-
-
-
-
+- (void) testSnakeIsNotHitByHead {
+    DDSnake *snake = [DDSnake new];
+    [snake growUp];
+    [snake growUp];
+    [snake changeSnakeDirection:DDDirectionDown];
+    [snake move];
+    [snake changeSnakeDirection:DDDirectionRight];
+    [snake move];
+    [snake changeSnakeDirection:DDDirectionRight];
+    [snake move];
+    XCTAssertFalse([snake isHitBodyByHead]);
+}
 
 - (void)testPerformanceExample {
     // This is an example of a performance test case.
