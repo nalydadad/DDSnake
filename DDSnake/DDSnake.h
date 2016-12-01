@@ -10,12 +10,22 @@
 #import "DDConstants.h"
 #import "DDPoint.h"
 
+@class DDSnake;
+@protocol SnakeDelegate
+- (void) DDSnake:(DDSnake*)snake checkSubBodyIsOutofView:(DDCPoint*)body;
+@end
+
+
 @interface DDSnake : NSObject
-@property(assign, nonatomic) DDDirection direction;
+
+@property(weak, nonatomic) id<SnakeDelegate> delegate;
 @property(strong, nonatomic) NSMutableArray<NSValue*> *bodyQueue;
+
+- (instancetype)initWithPoint:(DDCPoint)point Direction:(DDDirection)direction;
 - (DDCPoint) head;
 - (void) move;
 - (void) changeSnakeDirection:(DDDirection)dir;
 - (BOOL) isHitBodyByHead;
-- (void)growUp;
+- (BOOL) isPointInSnakeBody:(DDCPoint)object;
+- (void) growUp;
 @end

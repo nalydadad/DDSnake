@@ -13,13 +13,13 @@
 
 - (id)dequeue {
     id object = [self firstObject];
-    if(object != nil) {
+    if (object != nil) {
         [self removeObjectAtIndex:0];
     }
     return object;
 }
 
--(void)enqueue:(id)obj {
+- (void)enqueue:(id)obj {
     [self addObject:obj];
 }
 

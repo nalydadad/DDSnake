@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "DDGameView.h"
+#import "DDSnake.h"
 
 
-@interface PlayViewController : UIViewController<GameDataSource, GameDelegate>
+@interface PlayViewController : UIViewController<GameDataSource, GameDelegate, SnakeDelegate>
 @end

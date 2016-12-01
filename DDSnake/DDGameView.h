@@ -13,11 +13,8 @@
 @class DDGameView;
 
 @protocol GameDataSource
-//- (DDCPoint)gameviewRequestSnakeHead:(DDGameView *)view;
-//- (DDCPoint)gameviewRequestSnakeTail:(DDGameView *)view;
-- (DDCPoint)gameviewRequestFruit:(DDGameView*)view;
-- (id)gameViewRequestSnakeBody:(DDGameView*)view;
-
+- (CGRect) gameviewRequestFruit:(DDGameView*)view;
+- (NSArray<NSValue *> *) gameViewRequestSnakeBody:(DDGameView*)view;
 @end
 
 @protocol GameDelegate
@@ -26,8 +23,4 @@
 
 @interface DDGameView : UIView
 @property(weak, nonatomic) id<GameDataSource, GameDelegate> delegate;
-@property(assign, nonatomic) NSUInteger scale;
-@property(assign, nonatomic) NSUInteger coorWidth;
-@property(assign, nonatomic) NSUInteger coorHeight;
-- (DDCPoint) preventOutOfBount:(DDCPoint)originPoint;
 @end

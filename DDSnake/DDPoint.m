@@ -25,14 +25,12 @@
 
 @implementation NSValue (DDCPoint)
 
-+ (instancetype)valueWithDDCPoint:(DDCPoint)point
-{
++ (instancetype)valueWithDDCPoint:(DDCPoint)point {
     NSValue *value = [NSValue valueWithBytes:&point objCType:@encode(DDCPoint)];
     return value;
 }
 
-- (DDCPoint)DDCPointValue
-{
+- (DDCPoint)DDCPointValue {
     DDCPoint point;
     [self getValue:&point];
     return point;

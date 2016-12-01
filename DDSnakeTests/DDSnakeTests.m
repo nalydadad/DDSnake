@@ -12,6 +12,31 @@
 #import "DDSnake.h"
 #import "DDConstants.h"
 
+
+@interface NSMutableArrayCategoryTest : XCTestCase
+
+@end
+
+@implementation NSMutableArrayCategoryTest
+
+- (void)testNSMutableArrayDequeue
+{
+    NSMutableArray * bodyQueue = [[NSMutableArray alloc]init];
+    [bodyQueue addObject:@"1"];
+    XCTAssertTrue([[bodyQueue dequeue] isEqualToString:@"1"]);
+    XCTAssertTrue([bodyQueue count] == 0);
+}
+
+- (void)testNSMutableArrayEnqueue
+{
+    NSMutableArray * bodyQueue = [[NSMutableArray alloc]init];
+    [bodyQueue enqueue:@"1"];
+    XCTAssertTrue([bodyQueue[0] isEqualToString:@"1"]);
+    XCTAssertTrue([bodyQueue count] == 1);
+}
+
+@end
+
 @interface DDSnakeTests : XCTestCase
 
 @end
@@ -39,22 +64,6 @@
     XCTAssertTrue(v.y == 2);
 }
 
-- (void)testNSMutableArrayDequeue
-{
-    NSMutableArray * bodyQueue = [[NSMutableArray alloc]init];
-    [bodyQueue addObject:@"1"];
-    XCTAssertTrue([[bodyQueue dequeue] isEqualToString:@"1"]);
-    XCTAssertTrue([bodyQueue count] == 0);
-}
-
-- (void)testNSMutableArrayEnqueue
-{
-    NSMutableArray * bodyQueue = [[NSMutableArray alloc]init];
-    [bodyQueue enqueue:@"1"];
-    XCTAssertTrue([bodyQueue[0] isEqualToString:@"1"]);
-    XCTAssertTrue([bodyQueue count] == 1);
-}
-
 #pragma - mark Test Snake class
 
 - (void) testInitialSnakeBody{
@@ -63,9 +72,21 @@
     DDCPoint point = {.x=11, .y=10};
     DDCPoint snakeBody = [snake.bodyQueue[0] DDCPointValue];
     XCTAssertTrue(point.x == snakeBody.x && point.y == snakeBody.y);
+
     point.x -= 1;
     snakeBody = [snake.bodyQueue[1] DDCPointValue];
     XCTAssertTrue(point.x == snakeBody.x && point.y == snakeBody.y);
+}
+
+- (void) testInitialSnakeBodyWithPointAndDirection{
+    DDCPoint startPoint = DDCPointMake(20, 20);
+    DDSnake *snake = [[DDSnake alloc]initWithPoint:startPoint Direction:DDDirectionRight];
+    XCTAssertTrue([snake.bodyQueue count] == 2);
+    DDCPoint snakeBody = [snake.bodyQueue[0] DDCPointValue];
+    XCTAssertTrue(startPoint.x == snakeBody.x && startPoint.y == snakeBody.y);
+    startPoint = DDCPointMake(21, 20);
+    snakeBody = [snake.bodyQueue[1] DDCPointValue];
+    XCTAssertTrue(startPoint.x == snakeBody.x && startPoint.y == snakeBody.y);
 }
 
 - (void) testInitialSankeDirection {
@@ -142,12 +163,7 @@
 }
 
 - (void) testSnakeGrowUpByVerticalTail {
-    DDSnake *snake = [DDSnake new];
-    [snake.bodyQueue removeAllObjects];
-    DDCPoint tail = {.x=10, .y=10};
-    DDCPoint head = {.x=10, .y=11};
-    [snake.bodyQueue enqueue:[NSValue valueWithDDCPoint:tail]];
-    [snake.bodyQueue enqueue:[NSValue valueWithDDCPoint:head]];
+    DDSnake *snake = [[DDSnake alloc] initWithPoint:DDCPointMake(10, 10) Direction:DDDirectionDown];
     [snake growUp];
     DDCPoint firstLastTail = [snake.bodyQueue[0] DDCPointValue];
     DDCPoint secondLastTail = [snake.bodyQueue[1] DDCPointValue];
@@ -179,6 +195,30 @@
     [snake changeSnakeDirection:DDDirectionRight];
     [snake move];
     XCTAssertFalse([snake isHitBodyByHead]);
+}
+
+
+- (void)testObjectIsInSnakeBody {
+    DDSnake *snake = [[DDSnake alloc] initWithPoint:DDCPointMake(20, 20) Direction:DDDirectionUp];
+    [snake growUp];
+    [snake growUp];
+    [snake growUp];
+    
+    XCTAssertFalse([snake isPointInSnakeBody:DDCPointMake(20, 18)]);
+    XCTAssertTrue([snake isPointInSnakeBody:DDCPointMake(20, 19)]);
+    XCTAssertTrue([snake isPointInSnakeBody:DDCPointMake(20, 20)]);
+    XCTAssertTrue([snake isPointInSnakeBody:DDCPointMake(20, 25)]);
+    XCTAssertTrue([snake isPointInSnakeBody:DDCPointMake(20, 26)]);
+    XCTAssertFalse([snake isPointInSnakeBody:DDCPointMake(20, 27)]);
+}
+
+- (void)testObjectIsNotInSnakeBody {
+    DDSnake *snake = [[DDSnake alloc] initWithPoint:DDCPointMake(20, 20) Direction:DDDirectionLeft];
+    [snake growUp];
+    [snake growUp];
+    [snake growUp];
+    
+    XCTAssertFalse([snake isPointInSnakeBody:DDCPointMake(17, 22)]);
 }
 
 - (void)testPerformanceExample {

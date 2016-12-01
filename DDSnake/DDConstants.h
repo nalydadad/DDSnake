@@ -11,7 +11,7 @@
 #define DDConstants_h
 
 typedef NS_ENUM(NSInteger, DDDirection) {
-    DDDirectionUp=0,
+    DDDirectionUp = 0,
     DDDirectionRight,
     DDDirectionDown,
     DDDirectionLeft

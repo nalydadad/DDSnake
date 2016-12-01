@@ -1,4 +1,4 @@
-    //
+//
 //  PlayViewController.m
 //  DDSnake
 //
@@ -7,35 +7,50 @@
 //
 
 #import "PlayViewController.h"
-#import "DDSnake.h"
 
 @interface PlayViewController ()
 
 @property(strong, nonatomic) DDSnake *snake;
 @property(assign, nonatomic) DDCPoint fruit;
 @property(weak, nonatomic) NSTimer *timer;
-@property(strong, nonatomic)IBOutlet DDGameView *gameView;
+@property(strong, nonatomic) IBOutlet DDGameView *gameView;
 @property(assign, nonatomic) DDDirection gestureDirection;
 
+@property(assign, nonatomic) NSInteger widthBound;
+@property(assign, nonatomic) NSInteger heightBound;
+@property(assign, nonatomic) CGFloat offsetX;
+@property(assign, nonatomic) CGFloat offsetY;
+@property(assign, nonatomic) NSUInteger scale;
 @end
 
 @implementation PlayViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.snake = [[DDSnake alloc] init];
-    self.fruit = [self generateRandomFruit];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5f
-                                                   target:self
-                                                 selector:@selector(taskInEachStep)
-                                                 userInfo:nil
-                                                  repeats:YES];
-    self.gestureDirection = DDDirectionLeft;
-    [self.timer fire];
-    self.gameView.delegate = self;
+    [self startNewGameAtLocation:DDCPointMake(20, 20) initialDirection:DDDirectionLeft];
 }
 
--(void)viewDidDisappear:(BOOL)animated {
+- (void)startNewGameAtLocation:(DDCPoint)startPoint initialDirection:(DDDirection)direction {
+    self.scale = 20;
+    CGSize screeSize = [[UIScreen mainScreen] bounds].size;
+    self.widthBound = screeSize.width / self.scale;
+    self.heightBound = screeSize.height / self.scale;
+    self.offsetX = (screeSize.width - self.scale * self.widthBound) / 2.0;
+    self.offsetY = (screeSize.height - self.scale * self.heightBound) / 2.0;
+    
+    self.snake = [[DDSnake alloc] initWithPoint:startPoint Direction:direction];
+    self.gestureDirection = direction;
+    self.fruit = [self generateRandomFruit];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1f
+                                                  target:self
+                                                selector:@selector(taskInEachStep)
+                                                userInfo:nil
+                                                 repeats:YES];
+    self.gameView.delegate = self;
+    self.snake.delegate = self;
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [self.timer invalidate];
     self.timer = nil;
@@ -44,29 +59,28 @@
 - (void)taskInEachStep {
     [self.snake changeSnakeDirection:self.gestureDirection];
     [self.snake move];
-    
-    if([self.snake isHitBodyByHead]) {
+
+    if ([self.snake isHitBodyByHead]) {
         [self.timer invalidate];
         self.timer = nil;
         [self performSegueWithIdentifier:@"backToMain" sender:self];
     }
-    
-    if(DDCPointEqualToPoint([self.gameView preventOutOfBount:self.snake.head], self.fruit)) {
-        self.fruit = [self.gameView preventOutOfBount:[self generateRandomFruit]];
+
+    if (DDCPointEqualToPoint(self.snake.head, self.fruit)) {
+        self.fruit = [self generateRandomFruit];
         [self.snake growUp];
     }
-    
+
     [self.gameView setNeedsDisplay];
 }
 
 
-
-- (DDCPoint) generateRandomFruit {
-    DDCPoint fruit = DDCPointMake((NSInteger)arc4random() % (self.gameView.coorWidth),
-                                  (NSInteger)arc4random() % (self.gameView.coorHeight));
-    while([self.snake.bodyQueue containsObject:[NSValue valueWithDDCPoint:fruit]]) {
-        fruit = DDCPointMake((NSInteger)arc4random() % (self.gameView.coorWidth),
-                             (NSInteger)arc4random() % (self.gameView.coorHeight));
+- (DDCPoint)generateRandomFruit {
+    DDCPoint fruit = DDCPointMake((NSInteger) arc4random() % (self.widthBound),
+            (NSInteger) arc4random() % (self.heightBound));
+    while ([self.snake isPointInSnakeBody:fruit]) {
+        fruit = DDCPointMake((NSInteger) arc4random() % (self.widthBound),
+                (NSInteger) arc4random() % (self.heightBound));
     }
     return fruit;
 }
@@ -78,20 +92,38 @@
 
 #pragma - View DataSource and Delegate
 
-- (DDCPoint)gameviewRequestFruit:(DDGameView *)view{
-    return self.fruit;
+- (CGRect)gameviewRequestFruit:(DDGameView *)view {
+    return [self requestRectCoordinate:self.fruit];
 }
 
-- (DDCPoint)gameviewRequestSnakeHead:(DDGameView *)view{
-    return self.snake.head;
+- (id)gameViewRequestSnakeBody:(DDGameView *)view {
+    NSMutableArray* rectArray = [[NSMutableArray alloc]init];
+    for(NSValue *body in self.snake.bodyQueue) {
+        [rectArray addObject:[NSValue valueWithCGRect:[self requestRectCoordinate:[body DDCPointValue]]]];
+    }
+    return rectArray;
 }
 
--(id)gameViewRequestSnakeBody:(DDGameView *)view {
-    return self.snake.bodyQueue;
-}
-
-- (void)gameview:(DDGameView *)view didChangeDirection:(DDDirection)direction{
+- (void)gameview:(DDGameView *)view didChangeDirection:(DDDirection)direction {
     self.gestureDirection = direction;
+}
+
+- (void) DDSnake:(DDSnake*)snake checkSubBodyIsOutofView:(DDCPoint*)body {
+    if (body->x < 0) {
+        body->x += self.widthBound;
+    }
+    if (body->y < 0) {
+        body->y += self.heightBound;
+    }
+    body->x %= self.widthBound;
+    body->y %= self.heightBound;
+}
+
+- (CGRect) requestRectCoordinate:(DDCPoint)point {
+    return CGRectMake(point.x * self.scale + self.offsetX,
+                      point.y * self.scale + self.offsetY,
+                      self.scale,
+                      self.scale);
 }
 
 @end
